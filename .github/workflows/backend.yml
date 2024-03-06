@@ -27,14 +27,14 @@ jobs:
         run: npm run build
 
       - name: Lint
-        run: npm run ci:lint # Ejecuta el comando npm run ci:lint de nuestro repositorio. Asegurarnos que tengamos un script en el package.json que ejecute el linter que estemos usando, en este caso ESlint
+        run: npm run lint
 
       - name: Test
-        run: npm run ci:test # Ejecuta el comando npm run ci:test de nuestro repositorio. Asegurarnos que tengamos un script en el package.json que ejecute el runner de testing que estemos usando
+        run: npm run test
 
       - name: SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
-        with: # Muy importante esta parte, ya que le dice a SonarCloud que sólo analice el proyecto de front
+        with:
           projectBaseDir: back-end-app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
