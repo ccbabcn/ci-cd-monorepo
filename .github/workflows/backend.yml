@@ -12,6 +12,9 @@ jobs:
       run:
         working-directory: ./back-end-app
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,3 +42,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONT }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./back-end-app #
+          push: true
+          tags: ghcr.io/${{ github.actor }}/ci-cd-example-back:latest
